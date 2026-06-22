@@ -56,6 +56,10 @@ export interface Historico {
   usuarioId?: string;
   livroId?: string;
   tipo: "emprestimo" | "devolucao" | "reserva";
+  dataEmprestimo?: string | null;
+  dataPrevistaDevolucao?: string | null;
+  dataDevolucao?: string | null;
+  valorMulta?: number;
 }
 
 interface DB {

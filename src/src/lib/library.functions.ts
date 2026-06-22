@@ -46,7 +46,9 @@ export const getLibraryData = createServerFn({ method: "GET" }).handler(async ()
     supabaseAdmin.from("autores").select("id,nome,nacionalidade,nascimento"),
     supabaseAdmin.from("editoras").select("id,nome,cnpj,pais"),
     supabaseAdmin.from("livros").select("id,titulo,autor_id,editora_id,isbn,categoria,ano,exemplares,status"),
-    supabaseAdmin.from("historicos").select("usuario_id,livro_id,tipo"),
+    supabaseAdmin
+      .from("historicos")
+      .select("usuario_id,livro_id,tipo,data_emprestimo,data_prevista_devolucao,data_devolucao,valor_multa,created_at"),
   ]);
 
   for (const result of [usuarios, autores, editoras, livros, historicos]) {
@@ -68,10 +70,14 @@ export const getLibraryData = createServerFn({ method: "GET" }).handler(async ()
       exemplares: l.exemplares,
       status: l.status as Status,
     })),
-    historicos: (historicos.data ?? []).map((h) => ({
+    historicos: (historicos.data ?? []).map((h: any) => ({
       usuarioId: h.usuario_id ?? undefined,
       livroId: h.livro_id ?? undefined,
       tipo: h.tipo as "emprestimo" | "devolucao" | "reserva",
+      dataEmprestimo: h.data_emprestimo ?? h.created_at ?? null,
+      dataPrevistaDevolucao: h.data_prevista_devolucao ?? null,
+      dataDevolucao: h.data_devolucao ?? null,
+      valorMulta: Number(h.valor_multa ?? 0),
     })),
   };
 });
