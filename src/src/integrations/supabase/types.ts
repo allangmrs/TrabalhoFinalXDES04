@@ -71,24 +71,36 @@ export type Database = {
       historicos: {
         Row: {
           created_at: string
+          data_devolucao: string | null
+          data_emprestimo: string | null
+          data_prevista_devolucao: string | null
           id: string
           livro_id: string | null
           tipo: string
           usuario_id: string | null
+          valor_multa: number
         }
         Insert: {
           created_at?: string
+          data_devolucao?: string | null
+          data_emprestimo?: string | null
+          data_prevista_devolucao?: string | null
           id?: string
           livro_id?: string | null
           tipo: string
           usuario_id?: string | null
+          valor_multa?: number
         }
         Update: {
           created_at?: string
+          data_devolucao?: string | null
+          data_emprestimo?: string | null
+          data_prevista_devolucao?: string | null
           id?: string
           livro_id?: string | null
           tipo?: string
           usuario_id?: string | null
+          valor_multa?: number
         }
         Relationships: [
           {

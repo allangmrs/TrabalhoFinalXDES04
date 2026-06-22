@@ -10,14 +10,26 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as UsuariosRouteImport } from './routes/usuarios'
+import { Route as RelatoriosRouteImport } from './routes/relatorios'
 import { Route as LivrosRouteImport } from './routes/livros'
 import { Route as EditorasRouteImport } from './routes/editoras'
 import { Route as AutoresRouteImport } from './routes/autores'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as RelatoriosIndexRouteImport } from './routes/relatorios.index'
+import { Route as RelatoriosUsuariosMaisAtivosRouteImport } from './routes/relatorios.usuarios-mais-ativos'
+import { Route as RelatoriosLivrosMaisEmprestadosRouteImport } from './routes/relatorios.livros-mais-emprestados'
+import { Route as RelatoriosHistoricoUsuarioRouteImport } from './routes/relatorios.historico-usuario'
+import { Route as RelatoriosEmprestimosAtrasadosRouteImport } from './routes/relatorios.emprestimos-atrasados'
+import { Route as RelatoriosDisponibilidadeAcervoRouteImport } from './routes/relatorios.disponibilidade-acervo'
 
 const UsuariosRoute = UsuariosRouteImport.update({
   id: '/usuarios',
   path: '/usuarios',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RelatoriosRoute = RelatoriosRouteImport.update({
+  id: '/relatorios',
+  path: '/relatorios',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LivrosRoute = LivrosRouteImport.update({
@@ -40,13 +52,55 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const RelatoriosIndexRoute = RelatoriosIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => RelatoriosRoute,
+} as any)
+const RelatoriosUsuariosMaisAtivosRoute =
+  RelatoriosUsuariosMaisAtivosRouteImport.update({
+    id: '/usuarios-mais-ativos',
+    path: '/usuarios-mais-ativos',
+    getParentRoute: () => RelatoriosRoute,
+  } as any)
+const RelatoriosLivrosMaisEmprestadosRoute =
+  RelatoriosLivrosMaisEmprestadosRouteImport.update({
+    id: '/livros-mais-emprestados',
+    path: '/livros-mais-emprestados',
+    getParentRoute: () => RelatoriosRoute,
+  } as any)
+const RelatoriosHistoricoUsuarioRoute =
+  RelatoriosHistoricoUsuarioRouteImport.update({
+    id: '/historico-usuario',
+    path: '/historico-usuario',
+    getParentRoute: () => RelatoriosRoute,
+  } as any)
+const RelatoriosEmprestimosAtrasadosRoute =
+  RelatoriosEmprestimosAtrasadosRouteImport.update({
+    id: '/emprestimos-atrasados',
+    path: '/emprestimos-atrasados',
+    getParentRoute: () => RelatoriosRoute,
+  } as any)
+const RelatoriosDisponibilidadeAcervoRoute =
+  RelatoriosDisponibilidadeAcervoRouteImport.update({
+    id: '/disponibilidade-acervo',
+    path: '/disponibilidade-acervo',
+    getParentRoute: () => RelatoriosRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/autores': typeof AutoresRoute
   '/editoras': typeof EditorasRoute
   '/livros': typeof LivrosRoute
+  '/relatorios': typeof RelatoriosRouteWithChildren
   '/usuarios': typeof UsuariosRoute
+  '/relatorios/disponibilidade-acervo': typeof RelatoriosDisponibilidadeAcervoRoute
+  '/relatorios/emprestimos-atrasados': typeof RelatoriosEmprestimosAtrasadosRoute
+  '/relatorios/historico-usuario': typeof RelatoriosHistoricoUsuarioRoute
+  '/relatorios/livros-mais-emprestados': typeof RelatoriosLivrosMaisEmprestadosRoute
+  '/relatorios/usuarios-mais-ativos': typeof RelatoriosUsuariosMaisAtivosRoute
+  '/relatorios/': typeof RelatoriosIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -54,6 +108,12 @@ export interface FileRoutesByTo {
   '/editoras': typeof EditorasRoute
   '/livros': typeof LivrosRoute
   '/usuarios': typeof UsuariosRoute
+  '/relatorios/disponibilidade-acervo': typeof RelatoriosDisponibilidadeAcervoRoute
+  '/relatorios/emprestimos-atrasados': typeof RelatoriosEmprestimosAtrasadosRoute
+  '/relatorios/historico-usuario': typeof RelatoriosHistoricoUsuarioRoute
+  '/relatorios/livros-mais-emprestados': typeof RelatoriosLivrosMaisEmprestadosRoute
+  '/relatorios/usuarios-mais-ativos': typeof RelatoriosUsuariosMaisAtivosRoute
+  '/relatorios': typeof RelatoriosIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -61,14 +121,57 @@ export interface FileRoutesById {
   '/autores': typeof AutoresRoute
   '/editoras': typeof EditorasRoute
   '/livros': typeof LivrosRoute
+  '/relatorios': typeof RelatoriosRouteWithChildren
   '/usuarios': typeof UsuariosRoute
+  '/relatorios/disponibilidade-acervo': typeof RelatoriosDisponibilidadeAcervoRoute
+  '/relatorios/emprestimos-atrasados': typeof RelatoriosEmprestimosAtrasadosRoute
+  '/relatorios/historico-usuario': typeof RelatoriosHistoricoUsuarioRoute
+  '/relatorios/livros-mais-emprestados': typeof RelatoriosLivrosMaisEmprestadosRoute
+  '/relatorios/usuarios-mais-ativos': typeof RelatoriosUsuariosMaisAtivosRoute
+  '/relatorios/': typeof RelatoriosIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/autores' | '/editoras' | '/livros' | '/usuarios'
+  fullPaths:
+    | '/'
+    | '/autores'
+    | '/editoras'
+    | '/livros'
+    | '/relatorios'
+    | '/usuarios'
+    | '/relatorios/disponibilidade-acervo'
+    | '/relatorios/emprestimos-atrasados'
+    | '/relatorios/historico-usuario'
+    | '/relatorios/livros-mais-emprestados'
+    | '/relatorios/usuarios-mais-ativos'
+    | '/relatorios/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/autores' | '/editoras' | '/livros' | '/usuarios'
-  id: '__root__' | '/' | '/autores' | '/editoras' | '/livros' | '/usuarios'
+  to:
+    | '/'
+    | '/autores'
+    | '/editoras'
+    | '/livros'
+    | '/usuarios'
+    | '/relatorios/disponibilidade-acervo'
+    | '/relatorios/emprestimos-atrasados'
+    | '/relatorios/historico-usuario'
+    | '/relatorios/livros-mais-emprestados'
+    | '/relatorios/usuarios-mais-ativos'
+    | '/relatorios'
+  id:
+    | '__root__'
+    | '/'
+    | '/autores'
+    | '/editoras'
+    | '/livros'
+    | '/relatorios'
+    | '/usuarios'
+    | '/relatorios/disponibilidade-acervo'
+    | '/relatorios/emprestimos-atrasados'
+    | '/relatorios/historico-usuario'
+    | '/relatorios/livros-mais-emprestados'
+    | '/relatorios/usuarios-mais-ativos'
+    | '/relatorios/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -76,6 +179,7 @@ export interface RootRouteChildren {
   AutoresRoute: typeof AutoresRoute
   EditorasRoute: typeof EditorasRoute
   LivrosRoute: typeof LivrosRoute
+  RelatoriosRoute: typeof RelatoriosRouteWithChildren
   UsuariosRoute: typeof UsuariosRoute
 }
 
@@ -86,6 +190,13 @@ declare module '@tanstack/react-router' {
       path: '/usuarios'
       fullPath: '/usuarios'
       preLoaderRoute: typeof UsuariosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/relatorios': {
+      id: '/relatorios'
+      path: '/relatorios'
+      fullPath: '/relatorios'
+      preLoaderRoute: typeof RelatoriosRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/livros': {
@@ -116,14 +227,79 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/relatorios/': {
+      id: '/relatorios/'
+      path: '/'
+      fullPath: '/relatorios/'
+      preLoaderRoute: typeof RelatoriosIndexRouteImport
+      parentRoute: typeof RelatoriosRoute
+    }
+    '/relatorios/usuarios-mais-ativos': {
+      id: '/relatorios/usuarios-mais-ativos'
+      path: '/usuarios-mais-ativos'
+      fullPath: '/relatorios/usuarios-mais-ativos'
+      preLoaderRoute: typeof RelatoriosUsuariosMaisAtivosRouteImport
+      parentRoute: typeof RelatoriosRoute
+    }
+    '/relatorios/livros-mais-emprestados': {
+      id: '/relatorios/livros-mais-emprestados'
+      path: '/livros-mais-emprestados'
+      fullPath: '/relatorios/livros-mais-emprestados'
+      preLoaderRoute: typeof RelatoriosLivrosMaisEmprestadosRouteImport
+      parentRoute: typeof RelatoriosRoute
+    }
+    '/relatorios/historico-usuario': {
+      id: '/relatorios/historico-usuario'
+      path: '/historico-usuario'
+      fullPath: '/relatorios/historico-usuario'
+      preLoaderRoute: typeof RelatoriosHistoricoUsuarioRouteImport
+      parentRoute: typeof RelatoriosRoute
+    }
+    '/relatorios/emprestimos-atrasados': {
+      id: '/relatorios/emprestimos-atrasados'
+      path: '/emprestimos-atrasados'
+      fullPath: '/relatorios/emprestimos-atrasados'
+      preLoaderRoute: typeof RelatoriosEmprestimosAtrasadosRouteImport
+      parentRoute: typeof RelatoriosRoute
+    }
+    '/relatorios/disponibilidade-acervo': {
+      id: '/relatorios/disponibilidade-acervo'
+      path: '/disponibilidade-acervo'
+      fullPath: '/relatorios/disponibilidade-acervo'
+      preLoaderRoute: typeof RelatoriosDisponibilidadeAcervoRouteImport
+      parentRoute: typeof RelatoriosRoute
+    }
   }
 }
+
+interface RelatoriosRouteChildren {
+  RelatoriosDisponibilidadeAcervoRoute: typeof RelatoriosDisponibilidadeAcervoRoute
+  RelatoriosEmprestimosAtrasadosRoute: typeof RelatoriosEmprestimosAtrasadosRoute
+  RelatoriosHistoricoUsuarioRoute: typeof RelatoriosHistoricoUsuarioRoute
+  RelatoriosLivrosMaisEmprestadosRoute: typeof RelatoriosLivrosMaisEmprestadosRoute
+  RelatoriosUsuariosMaisAtivosRoute: typeof RelatoriosUsuariosMaisAtivosRoute
+  RelatoriosIndexRoute: typeof RelatoriosIndexRoute
+}
+
+const RelatoriosRouteChildren: RelatoriosRouteChildren = {
+  RelatoriosDisponibilidadeAcervoRoute: RelatoriosDisponibilidadeAcervoRoute,
+  RelatoriosEmprestimosAtrasadosRoute: RelatoriosEmprestimosAtrasadosRoute,
+  RelatoriosHistoricoUsuarioRoute: RelatoriosHistoricoUsuarioRoute,
+  RelatoriosLivrosMaisEmprestadosRoute: RelatoriosLivrosMaisEmprestadosRoute,
+  RelatoriosUsuariosMaisAtivosRoute: RelatoriosUsuariosMaisAtivosRoute,
+  RelatoriosIndexRoute: RelatoriosIndexRoute,
+}
+
+const RelatoriosRouteWithChildren = RelatoriosRoute._addFileChildren(
+  RelatoriosRouteChildren,
+)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AutoresRoute: AutoresRoute,
   EditorasRoute: EditorasRoute,
   LivrosRoute: LivrosRoute,
+  RelatoriosRoute: RelatoriosRouteWithChildren,
   UsuariosRoute: UsuariosRoute,
 }
 export const routeTree = rootRouteImport
